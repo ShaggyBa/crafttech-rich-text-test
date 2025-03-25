@@ -1,9 +1,9 @@
 import { createContext, useMemo, useRef, type ReactNode, type FC } from 'react';
 
-import type { ISelectedContextType } from '@/types/interfaces/ISelectedContext';
+import type { ISelectedContext } from '@/types/interfaces/ISelectedContext';
 
 
-export const SelectedContext = createContext<ISelectedContextType | undefined>(
+export const SelectedContext = createContext<ISelectedContext | undefined>(
 	undefined,
 );
 

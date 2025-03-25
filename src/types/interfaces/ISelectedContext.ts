@@ -1,5 +1,5 @@
 import type { RefObject } from 'react';
 
-export interface ISelectedContextType {
+export interface ISelectedContext {
 	selectetedElementsRef: RefObject<string[]>;
 }

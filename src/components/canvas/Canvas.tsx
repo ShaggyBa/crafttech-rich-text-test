@@ -2,9 +2,14 @@ import { useState } from "react";
 import { Layer, Stage } from "react-konva";
 import Shape from "../Shape/Shape";
 import styles from "./Canvas.module.scss"; // Импортируем модульные SCSS стили
+import { stopEditing } from "@/slices/editSlice";
+import { clearSelection } from "@/slices/selectedSlice";
+import { useDispatch } from "react-redux";
 
 const Canvas = ({ tool, stageRef }: any) => {
 	const [figures, setFigures] = useState<any>([]);
+
+	const dispatch = useDispatch()
 
 	const handleOnClick = (e: any) => {
 		if (tool === "cursor") return;
@@ -26,12 +31,24 @@ const Canvas = ({ tool, stageRef }: any) => {
 		]);
 	};
 
+	const handleStageMouseDown = (e: any) => {
+		// Получаем ссылку на кликнутый элемент
+		const clickedOnEmpty = e.target === e.target.getStage();
+
+		if (clickedOnEmpty) {
+			// Очищаем выделенные элементы и редактируемый элемент
+			dispatch(clearSelection());
+			dispatch(stopEditing());
+		}
+	};
+
 	return (
 		<div className={styles.canvasWrapper}>
 			<Stage
 				width={window.innerWidth}
 				height={window.innerHeight}
 				draggable={tool === "cursor"}
+				onMouseDown={handleStageMouseDown}
 				onClick={handleOnClick}
 				ref={stageRef}
 			>
