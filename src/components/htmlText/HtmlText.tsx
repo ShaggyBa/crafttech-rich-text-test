@@ -15,6 +15,7 @@ const HtmlText = forwardRef<HTMLDivElement, IHtmlText>(({ html, id, width, heigh
 				top: "100000px",
 				padding: "5px",
 				margin: "0px",
+				fontSize: "12px",
 				fontFamily: "Arial, sans-serif",
 				width: width ? `${width}px` : "auto",
 				height: height ? `${height}px` : "auto",

@@ -1,9 +1,9 @@
-import { EditState } from "@/types/interfaces/IEditState";
+import { IEditState } from "@/types/interfaces/IEditState";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
 
-const initialState: EditState = {
+const initialState: IEditState = {
 	editedElementId: null,
 };
 

@@ -1,3 +1,3 @@
-export interface SelectedElementsState {
+export interface ISelectedElementsState {
 	selectedElements: string[];
 }

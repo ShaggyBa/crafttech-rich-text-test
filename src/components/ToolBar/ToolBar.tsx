@@ -1,15 +1,15 @@
 import { IToolbar } from "@/types/interfaces/IToolbar";
 import React, { useEffect, useRef, useState } from "react";
 import { Html } from "react-konva-utils";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.bubble.css";
-
-
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.bubble.css";
+import "./ToolBar.module.scss";
 const Toolbar: React.FC<IToolbar> = ({
-	ref,
 	targetRef,
 	setValue,
 	value,
+	width,
+	height
 }) => {
 	const toolbarRef = useRef<HTMLDivElement>(null);
 	const [position, setPosition] = useState({ top: 0, left: 0, visible: false });
@@ -48,23 +48,25 @@ const Toolbar: React.FC<IToolbar> = ({
 
 	if (!position.visible) return null;
 
+
 	return (
 		<Html
 		>
 			<div
 				ref={toolbarRef}
 				style={{
+					width: width ? `${width}px` : "100px",
+					height: height ? `${height}px` : "100px",
 					background: "transparent",
-					padding: "5px",
+					padding: 0,
 				}}
 			>
 				<ReactQuill
 					value={value}
 					style={{
-						width: "200px",
-						fontSize: "16px"
+						width: "inherit",
+						height: "inherit",
 					}}
-					ref={ref}
 					onChange={setValue}
 					theme="bubble"
 					modules={{

@@ -1,3 +1,3 @@
-export interface EditState {
+export interface IEditState {
 	editedElementId: string | null;
 }

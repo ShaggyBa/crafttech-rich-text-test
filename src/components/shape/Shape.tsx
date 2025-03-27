@@ -11,11 +11,12 @@ import { RootState } from "@/store/store";
 import Toolbar from "@components/ToolBar/ToolBar";
 import { useDispatch, useSelector } from "react-redux";
 import Konva from "konva";
-import ReactQuill from "react-quill";
+import ReactQuill from "react-quill-new";
+import { KonvaEventObject } from "konva/lib/Node";
 
 const Shape = (props: IShape) => {
 	const { x, y, width, height, id, text } = props;
-	const [value, setValue] = useState<string>(text);
+	const [value, setValue] = useState<string>(text || "");
 	const [image, setImage] = useState<CanvasImageSource | null>(null);
 
 	const groupRef = useRef<Konva.Group>(null);
@@ -89,12 +90,15 @@ const Shape = (props: IShape) => {
 				onDblClick={handleDoubleClick}
 				ref={groupRef}
 				draggable
+				onDragMove={(e: KonvaEventObject<DragEvent>) => { }} //Избавиться от предупреждений
+				onDragEnd={(e: KonvaEventObject<DragEvent>) => { }} //Избавиться от предупреждений
+
 			>
 				<Rect stroke={isSelected ? "blue" : "black"} width={width} height={height} fill="white" />
 
 				{
 					isEditing ? (
-						<Toolbar ref={textareaRef} targetRef={groupRef} setValue={setValue} value={value} />
+						<Toolbar targetRef={groupRef} setValue={setValue} value={value} width={width} height={height} />
 					) : image ? (
 						<Image ref={imageRef} image={image} x={0} y={0} width={width} height={height} />
 					) : null

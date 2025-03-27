@@ -1,8 +1,8 @@
-import { SelectedElementsState } from "@/types/interfaces/ISelectedElementsState";
+import { ISelectedElementsState } from "@/types/interfaces/ISelectedElementsState";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
-const initialState: SelectedElementsState = {
+const initialState: ISelectedElementsState = {
 	selectedElements: [],
 };
 

@@ -1,0 +1,10 @@
+// не нашел другого способа отредактировать стили quill
+:global(.ql-editor) {
+	padding: 5px !important;
+	font-size: 12px;
+	line-height: normal;
+}
+
+:global(.ql-toolbar) {
+	width: 200px;
+}

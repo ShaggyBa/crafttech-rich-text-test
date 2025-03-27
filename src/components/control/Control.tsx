@@ -1,7 +1,10 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setTool } from "@/slices/controlSlice";
-const Control = ({ tool }: { tool: string }) => {
+import { RootState } from "@/store/store";
+const Control = () => {
 	const dispatch = useDispatch()
+
+	const tool = useSelector((state: RootState) => state.control.selectedTool);
 
 	const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		dispatch(setTool(e.target.value));

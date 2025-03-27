@@ -5,14 +5,17 @@ import { IShape } from "@/types/interfaces/IShape";
 import Konva from "konva";
 import { useState } from "react";
 import { Layer, Stage } from "react-konva";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Shape from "@components/Shape/Shape";
 import styles from "./Canvas.module.scss"; // Импортируем модульные SCSS стили
+import { RootState } from "@/store/store";
 
 
 
-const Canvas = ({ tool, stageRef }: ICanvas) => {
+const Canvas = ({ stageRef }: ICanvas) => {
 	const [figures, setFigures] = useState<IShape[]>([]);
+
+	const tool = useSelector((state: RootState) => state.control.selectedTool);
 
 	const dispatch = useDispatch()
 
