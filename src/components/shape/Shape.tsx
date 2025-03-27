@@ -1,25 +1,27 @@
+import { IShape } from "@/types/interfaces/IShape";
+import HtmlText from "@components/HtmlText/HtmlText";
 import html2canvas from "html2canvas";
 import { useEffect, useRef, useState } from "react";
-import { Group, Rect, Image } from "react-konva";
+import { Group, Image, Rect } from "react-konva";
 import { Html } from "react-konva-utils";
-import HtmlText from "../HtmlText/HtmlText";
-import { IShape } from "@/types/interfaces/IShape";
 
-import { useDispatch, useSelector } from "react-redux";
 import { startEditing, stopEditing } from "@/slices/editSlice";
 import { selectElement } from "@/slices/selectedSlice";
 import { RootState } from "@/store/store";
+import Toolbar from "@components/ToolBar/ToolBar";
+import { useDispatch, useSelector } from "react-redux";
+import Konva from "konva";
+import ReactQuill from "react-quill";
 
 const Shape = (props: IShape) => {
 	const { x, y, width, height, id, text } = props;
-	const [value, setValue] = useState(text);
-	const [image, setImage] = useState<any>(null);
+	const [value, setValue] = useState<string>(text);
+	const [image, setImage] = useState<CanvasImageSource | null>(null);
 
-	const groupRef = useRef<any>(null);
-	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-	const imageRef = useRef<any>(null);
-	const htmlRef = useRef<any>(null);
-
+	const groupRef = useRef<Konva.Group>(null);
+	const textareaRef = useRef<ReactQuill | null>(null);
+	const imageRef = useRef<Konva.Image>(null);
+	const htmlRef = useRef<HTMLDivElement>(null);
 	const currentTool = useSelector((state: RootState) => state.control.selectedTool);
 
 	const dispatch = useDispatch();
@@ -37,7 +39,6 @@ const Shape = (props: IShape) => {
 		// Даем время на рендер перед захватом canvas
 		await new Promise((resolve) => setTimeout(resolve, 50));
 
-		console.log(htmltext)
 		const canvas = await html2canvas(htmltext, {
 			backgroundColor: "rgba(0,0,0,0)",
 			width: width, // Принудительно задаем ширину
@@ -57,8 +58,8 @@ const Shape = (props: IShape) => {
 
 	}, [isEditing, value]);
 
-	const handleClick = (event: any) => {
-		event.cancelBubble = true;
+	const handleClick = (e: Konva.KonvaEventObject<MouseEvent>) => {
+		e.cancelBubble = true;
 		if (currentTool !== "cursor") return;
 
 		if (isEditing || id !== editedElementId) {
@@ -71,63 +72,39 @@ const Shape = (props: IShape) => {
 		}
 	};
 
-	const handleDoubleClick = (event: any) => {
-		event.cancelBubble = true;
+	const handleDoubleClick = (e: Konva.KonvaEventObject<MouseEvent>) => {
+		e.cancelBubble = true;
 		if (currentTool !== "cursor") return;
 
 		dispatch(startEditing(id));
 
 	};
 
-	const handleInput = (e: any) => {
-		setValue(e.target.value);
-	};
-
 	return (
-		<Group
-			x={x}
-			y={y}
-			onClick={handleClick}
-			onDblClick={handleDoubleClick}
-			ref={groupRef}
-			draggable
-		>
-			<Rect stroke={isSelected ? "blue" : "black"} width={width} height={height} fill="white" />
+		<>
+			<Group
+				x={x}
+				y={y}
+				onClick={handleClick}
+				onDblClick={handleDoubleClick}
+				ref={groupRef}
+				draggable
+			>
+				<Rect stroke={isSelected ? "blue" : "black"} width={width} height={height} fill="white" />
 
-			{
-				isEditing ? (
-					<Html>
-						<textarea
-							ref={textareaRef}
-							value={value}
-							onChange={handleInput}
-							style={{
-								position: "absolute",
-								top: 0,
-								left: 0,
-								width: `${width}px`,
-								height: `${height}px`,
-								border: "none",
-								outline: "none",
-								fontSize: "16px",
-								fontFamily: "Arial, sans-serif",
-								padding: "5px",
-								margin: "0px",
-								overflow: "hidden",
-								background: "transparent",
-								resize: "none",
-							}}
-						/>
-					</Html>
-				) : image ? (
-					<Image ref={imageRef} image={image} x={0} y={0} width={width} height={height} />
-				) : null
-			}
-			{/* Сюда должен будет вставляться отформатированный текст с react-quill */}
-			<Html>
-				<HtmlText ref={htmlRef} html={value} width={width} height={height} id={id} />
-			</Html>
-		</Group>
+				{
+					isEditing ? (
+						<Toolbar ref={textareaRef} targetRef={groupRef} setValue={setValue} value={value} />
+					) : image ? (
+						<Image ref={imageRef} image={image} x={0} y={0} width={width} height={height} />
+					) : null
+				}
+				{/* Сюда должен будет вставляться отформатированный текст с react-quill */}
+				<Html>
+					<HtmlText ref={htmlRef} html={value} width={width} height={height} id={id} />
+				</Html>
+			</Group>
+		</>
 	);
 };
 

@@ -3,7 +3,7 @@ import { setTool } from "@/slices/controlSlice";
 const Control = ({ tool }: { tool: string }) => {
 	const dispatch = useDispatch()
 
-	const handleOnChange = (e: any) => {
+	const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		dispatch(setTool(e.target.value));
 	};
 

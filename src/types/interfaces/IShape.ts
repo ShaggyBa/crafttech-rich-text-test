@@ -1,12 +1,15 @@
+import { Stage } from "konva/lib/Stage";
+import { RefObject } from "react";
+
 export interface IShape {
-	x: number;
-	y: number;
+	id: string;
 	width: number;
 	height: number;
-	tool: string;
+	type: string;
+	x: number;
+	y: number;
 	html: string;
-	id: string;
 	text: string;
+	stageRef?: RefObject<Stage>;
+	tool: string;
 }
-
-// x, y, width, height, tool, html, id, text

@@ -1,22 +1,33 @@
-import { useState } from "react";
-import { Layer, Stage } from "react-konva";
-import Shape from "../Shape/Shape";
-import styles from "./Canvas.module.scss"; // Импортируем модульные SCSS стили
 import { stopEditing } from "@/slices/editSlice";
 import { clearSelection } from "@/slices/selectedSlice";
+import { ICanvas } from "@/types/interfaces/ICanvas";
+import { IShape } from "@/types/interfaces/IShape";
+import Konva from "konva";
+import { useState } from "react";
+import { Layer, Stage } from "react-konva";
 import { useDispatch } from "react-redux";
+import Shape from "@components/Shape/Shape";
+import styles from "./Canvas.module.scss"; // Импортируем модульные SCSS стили
 
-const Canvas = ({ tool, stageRef }: any) => {
-	const [figures, setFigures] = useState<any>([]);
+
+
+const Canvas = ({ tool, stageRef }: ICanvas) => {
+	const [figures, setFigures] = useState<IShape[]>([]);
 
 	const dispatch = useDispatch()
 
-	const handleOnClick = (e: any) => {
+	const handleOnClick = (e: Konva.KonvaEventObject<MouseEvent>) => {
 		if (tool === "cursor") return;
 		const stage = e.target.getStage();
+
+		if (!stage) return
+
 		const stageOffset = stage.absolutePosition();
 		const point = stage.getPointerPosition();
-		setFigures((prev: any) => [
+
+		if (!point) return
+
+		setFigures((prev: IShape[]) => [
 			...prev,
 			{
 				id: Date.now().toString(36),
@@ -27,11 +38,12 @@ const Canvas = ({ tool, stageRef }: any) => {
 				y: point.y - stageOffset.y,
 				html: "",
 				text: "",
+				tool: tool,
 			},
 		]);
 	};
 
-	const handleStageMouseDown = (e: any) => {
+	const handleStageMouseDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
 		// Получаем ссылку на кликнутый элемент
 		const clickedOnEmpty = e.target === e.target.getStage();
 
@@ -53,7 +65,7 @@ const Canvas = ({ tool, stageRef }: any) => {
 				ref={stageRef}
 			>
 				<Layer>
-					{figures.map((figure: any, i: number) => (
+					{figures.map((figure: IShape, i: number) => (
 						<Shape key={i} {...figure} stageRef={stageRef} tool={tool} />
 					))}
 				</Layer>

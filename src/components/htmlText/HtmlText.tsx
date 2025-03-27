@@ -1,6 +1,9 @@
+import { IHtmlText } from "@/types/interfaces/IHtmlText";
 import { forwardRef } from "react";
 
-const HtmlText = forwardRef(({ html, id, width, height }: any, ref: any) => {
+
+
+const HtmlText = forwardRef<HTMLDivElement, IHtmlText>(({ html, id, width, height }, ref) => {
 	return (
 		<div
 			id={`htmltext_${id}`}
