@@ -32,21 +32,18 @@ const Shape = (props: IShape) => {
 	const isSelected = selectedElements.includes(id);
 	const isEditing = editedElementId === id;
 
-	// Отрисовка текста в Image
 	const renderImage = async () => {
 		const htmltext = document.getElementById(`htmltext_${id}`);
 		if (!htmltext || htmltext.innerHTML.trim() === "") return;
 
-		// Даем время на рендер перед захватом canvas
-		await new Promise((resolve) => setTimeout(resolve, 50));
+		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		const canvas = await html2canvas(htmltext, {
 			backgroundColor: "rgba(0,0,0,0)",
-			width: width, // Принудительно задаем ширину
-			height: height, // Принудительно задаем высоту
+			width: width,
+			height: height,
 		});
 
-		// Проверяем, чтобы размеры canvas не были 0x0
 		if (canvas.width === 0 || canvas.height === 0) return;
 
 		setImage(canvas);
@@ -103,7 +100,6 @@ const Shape = (props: IShape) => {
 						<Image ref={imageRef} image={image} x={0} y={0} width={width} height={height} />
 					) : null
 				}
-				{/* Сюда должен будет вставляться отформатированный текст с react-quill */}
 				<Html>
 					<HtmlText ref={htmlRef} html={value} width={width} height={height} id={id} />
 				</Html>

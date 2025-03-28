@@ -68,9 +68,18 @@ const Toolbar: React.FC<IToolbar> = ({
 						height: "inherit",
 					}}
 					onChange={setValue}
+					className="toolbarContainer"
 					theme="bubble"
 					modules={{
-						toolbar: [["bold", "italic", "underline"], [{ list: "ordered" }, { list: "bullet" }], ["link"]],
+						toolbar: [
+							[{ header: [1, 2, 3, false] }], // Заголовки H1, H2, H3 и обычный текст
+							[{ font: [] }], // Шрифты
+							[{ size: [] }], // Размер шрифта
+							["bold", "italic", "underline", "strike"], // Жирный, курсив, подчёркнутый, зачёркнутый
+							[{ color: [] }, { background: [] }], // Цвет текста и фона
+							[{ list: "ordered" }, { list: "bullet" }], // Нумерованный и маркированный список
+							[{ align: [] }], // Выравнивание
+						],
 					}}
 				/>
 			</div>
