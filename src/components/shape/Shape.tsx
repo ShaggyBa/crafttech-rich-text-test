@@ -4,7 +4,6 @@ import html2canvas from "html2canvas";
 import { useEffect, useRef, useState } from "react";
 import { Group, Image, Rect } from "react-konva";
 import { Html } from "react-konva-utils";
-
 import { startEditing, stopEditing } from "@/slices/editSlice";
 import { selectElement } from "@/slices/selectedSlice";
 import { RootState } from "@/store/store";
@@ -12,7 +11,6 @@ import Toolbar from "@components/ToolBar/ToolBar";
 import { useDispatch, useSelector } from "react-redux";
 import Konva from "konva";
 import ReactQuill from "react-quill-new";
-import { KonvaEventObject } from "konva/lib/Node";
 
 const Shape = (props: IShape) => {
 	const { x, y, width, height, id, text } = props;
@@ -35,6 +33,7 @@ const Shape = (props: IShape) => {
 	const renderImage = async () => {
 		const htmltext = document.getElementById(`htmltext_${id}`);
 		if (!htmltext || htmltext.innerHTML.trim() === "") return;
+		console.log(htmltext.innerHTML);
 
 		await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -87,8 +86,8 @@ const Shape = (props: IShape) => {
 				onDblClick={handleDoubleClick}
 				ref={groupRef}
 				draggable
-				onDragMove={(e: KonvaEventObject<DragEvent>) => { }} //Избавиться от предупреждений
-				onDragEnd={(e: KonvaEventObject<DragEvent>) => { }} //Избавиться от предупреждений
+				onDragMove={() => { }} //Избавиться от предупреждений
+				onDragEnd={() => { }} //Избавиться от предупреждений
 
 			>
 				<Rect stroke={isSelected ? "blue" : "black"} width={width} height={height} fill="white" />

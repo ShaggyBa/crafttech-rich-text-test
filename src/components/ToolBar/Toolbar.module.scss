@@ -9,6 +9,14 @@
 	font-size: 12px;
 	line-height: normal;
 	height: inherit;
+
+	ul,
+	ol {
+		padding-left: 0px !important; // Уменьшает отступ списка
+	}
+	li {
+		list-style-position: outside;
+	}
 }
 
 .toolbarContainer {

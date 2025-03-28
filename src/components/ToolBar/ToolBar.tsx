@@ -12,11 +12,9 @@ const Toolbar: React.FC<IToolbar> = ({
 	height
 }) => {
 	const toolbarRef = useRef<HTMLDivElement>(null);
+
 	const [position, setPosition] = useState({ top: 0, left: 0, visible: false });
 
-
-
-	// не работает
 	useEffect(() => {
 		const updatePosition = () => {
 			if (!targetRef.current) return;
@@ -60,6 +58,7 @@ const Toolbar: React.FC<IToolbar> = ({
 					background: "transparent",
 					padding: 0,
 				}}
+				spellCheck={false}
 			>
 				<ReactQuill
 					value={value}
@@ -79,6 +78,7 @@ const Toolbar: React.FC<IToolbar> = ({
 							[{ color: [] }, { background: [] }], // Цвет текста и фона
 							[{ list: "ordered" }, { list: "bullet" }], // Нумерованный и маркированный список
 							[{ align: [] }], // Выравнивание
+							["clean"]
 						],
 					}}
 				/>

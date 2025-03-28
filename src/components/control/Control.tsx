@@ -11,7 +11,7 @@ const Control = () => {
 	};
 
 	return (
-		<div style={{ position: "absolute", top: 0 }}>
+		<div style={{ position: "absolute", top: "50%" }}>
 			<div>
 				<input
 					type="radio"
@@ -34,6 +34,18 @@ const Control = () => {
 					onChange={handleOnChange}
 				/>
 				<label htmlFor="shape">Добавление</label>
+			</div>
+
+			<div>
+				<input
+					type="radio"
+					id="eraser"
+					name="control"
+					value="eraser"
+					checked={tool === "eraser"}
+					onChange={handleOnChange}
+				/>
+				<label htmlFor="eraser">Удаление</label>
 			</div>
 		</div>
 	);

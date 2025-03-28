@@ -34,6 +34,23 @@ const HtmlText = forwardRef<HTMLDivElement, IHtmlText>(({ html, id, width, heigh
 			el.classList.remove("ql-font-serif", "ql-font-monospace");
 		});
 
+		doc.querySelectorAll<HTMLElement>("[class*='ql-align-']").forEach((el) => {
+			const classList = el.classList;
+
+			if (classList.contains("ql-align-center")) {
+				el.style.textAlign = "center";
+			} else if (classList.contains("ql-align-right")) { //Осталась проблема с правым выравниванием
+				el.style.textAlign = "right";
+			}
+			else if (classList.contains("ql-align-left")) {
+				el.style.textAlign = "left";
+
+			} else if (classList.contains("ql-align-justify")) {
+				el.style.textAlign = "justify";
+			}
+			el.classList.remove("ql-align-center", "ql-align-right", "ql-align-justify");
+		})
+
 		doc.querySelectorAll<HTMLElement>("li[data-list='bullet']").forEach((li) => {
 			let parent = li.closest("ol");
 			if (parent) {

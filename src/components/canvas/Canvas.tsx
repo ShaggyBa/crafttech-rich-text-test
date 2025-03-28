@@ -20,30 +20,40 @@ const Canvas = ({ stageRef }: ICanvas) => {
 	const dispatch = useDispatch()
 
 	const handleOnClick = (e: Konva.KonvaEventObject<MouseEvent>) => {
-		if (tool === "cursor") return;
-		const stage = e.target.getStage();
 
-		if (!stage) return
+		switch (tool) {
+			case "cursor":
+				break;
+			case "shape":
+				const stage = e.target.getStage();
 
-		const stageOffset = stage.absolutePosition();
-		const point = stage.getPointerPosition();
+				if (!stage) return
 
-		if (!point) return
+				const stageOffset = stage.absolutePosition();
+				const point = stage.getPointerPosition();
 
-		setFigures((prev: IShape[]) => [
-			...prev,
-			{
-				id: Date.now().toString(36),
-				width: 100,
-				height: 100,
-				type: "rect",
-				x: point.x - stageOffset.x,
-				y: point.y - stageOffset.y,
-				html: "",
-				text: "",
-				tool: tool,
-			},
-		]);
+				if (!point) return
+
+				setFigures((prev: IShape[]) => [
+					...prev,
+					{
+						id: Date.now().toString(36),
+						width: 100,
+						height: 100,
+						type: "rect",
+						x: point.x - stageOffset.x,
+						y: point.y - stageOffset.y,
+						html: "",
+						text: "",
+						tool: tool,
+					},
+				]);
+				break;
+			default:
+				break;
+		}
+
+
 	};
 
 	const handleStageMouseDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
