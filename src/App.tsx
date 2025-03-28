@@ -5,13 +5,12 @@ import Control from "./components/Control/Control";
 import Konva from "konva";
 
 function App() {
-	const stageRef = useRef<Konva.Stage>(null);
-	return (
-		<>
-			<Canvas stageRef={stageRef} />
-			<Control />
-		</>
-	);
+  return (
+    <>
+      <Canvas />
+      <Control />
+    </>
+  );
 }
 
 export default App;

@@ -1,23 +1,21 @@
-import { IEditState } from "@/types/interfaces/IEditState";
+import { IEditState } from "@/types/interfaces/Edit/IEditState";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-
-
 const initialState: IEditState = {
-	editedElementId: null,
+  editedElementId: null,
 };
 
 const editSlice = createSlice({
-	name: "edit",
-	initialState,
-	reducers: {
-		startEditing: (state, action: PayloadAction<string>) => {
-			state.editedElementId = action.payload;
-		},
-		stopEditing: (state) => {
-			state.editedElementId = null;
-		},
-	},
+  name: "edit",
+  initialState,
+  reducers: {
+    startEditing: (state, action: PayloadAction<string>) => {
+      state.editedElementId = action.payload;
+    },
+    stopEditing: (state) => {
+      state.editedElementId = null;
+    },
+  },
 });
 
 export const { startEditing, stopEditing } = editSlice.actions;
