@@ -1,0 +1,35 @@
+.controlContainer {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 1em;
+	row-gap: 2em;
+}
+
+.toolButton {
+	background: none;
+	border: none;
+	padding: 0;
+
+	display: flex;
+	align-items: center;
+	column-gap: 1em;
+
+	font-size: 1em;
+}
+
+.toolButton label {
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+}
+
+.toolButton.active label {
+	opacity: 1;
+}
+
+.toolButton:hover label,
+.toolButton.selected label {
+	opacity: 1;
+}

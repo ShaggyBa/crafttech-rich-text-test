@@ -1,13 +1,14 @@
-import { stopEditing, clearSelection, addShape, removeShape } from "@/slices/index";
+import Shape from "@/components/Shape/Shape";
+import { addShape, clearSelection, removeShape } from "@/slices/index";
+import { RootState } from "@/store/store";
+import { SHAPE_TYPES, TOOLS } from "@/types/enum";
 import { IShape } from "@/types/interfaces/index";
 import Konva from "konva";
 import { useRef } from "react";
 import { Layer, Stage } from "react-konva";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import Shape from "@/components/Shape/Shape";
 import styles from "./Canvas.module.scss"; // Импортируем модульные SCSS стили
-import { RootState } from "@/store/store";
-import { SHAPE_TYPES, TOOLS } from "@/types/enum";
+
 
 const Canvas = () => {
 	const figures = useSelector((state: RootState) => state.canvasElements.figures, shallowEqual);

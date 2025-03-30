@@ -1,54 +1,55 @@
-import { useDispatch, useSelector } from "react-redux";
 import { setTool } from "@/slices/index";
 import { RootState } from "@/store/store";
 import { TOOLS } from "@/types/enum";
-const Control = () => {
-	const dispatch = useDispatch()
+import { useDispatch, useSelector } from "react-redux";
+import styles from "./Control.module.scss";
+import { BsEraser } from "react-icons/bs";
+import { FaShapes } from "react-icons/fa6";
+import { GiArrowCursor } from "react-icons/gi";
 
+const Control = () => {
+	const dispatch = useDispatch();
 	const tool = useSelector((state: RootState) => state.control.selectedTool);
 
-	const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		dispatch(setTool(e.target.value));
+	const handleOnChange = (toolType: TOOLS) => {
+		dispatch(setTool(toolType));
+
+	};
+
+	const getIconStyle = (currentTool: TOOLS) => {
+		return {
+			fill: currentTool === tool ? "blue" : "black",
+			fontSize: "1.5em",
+		};
 	};
 
 	return (
-		<div style={{ position: "absolute", top: "50%" }}>
-			<div>
-				<input
-					type="radio"
-					id={TOOLS.CURSOR}
-					name="control"
-					value={TOOLS.CURSOR}
-					checked={tool === TOOLS.CURSOR}
-					onChange={handleOnChange}
-				/>
+		<div className={styles.controlContainer}>
+			<button
+				onClick={() => handleOnChange(TOOLS.CURSOR)}
+				className={tool === TOOLS.CURSOR ? styles.toolButton + " " + styles.active : styles.toolButton}
+				aria-label="Взаимодействие"
+			>
+				<GiArrowCursor style={getIconStyle(TOOLS.CURSOR)} />
 				<label htmlFor={TOOLS.CURSOR}>Взаимодействие</label>
-			</div>
-
-			<div>
-				<input
-					type="radio"
-					id={TOOLS.SHAPE}
-					name="control"
-					value={TOOLS.SHAPE}
-					checked={tool === TOOLS.SHAPE}
-					onChange={handleOnChange}
-				/>
+			</button>
+			<button
+				onClick={() => handleOnChange(TOOLS.SHAPE)}
+				className={tool === TOOLS.SHAPE ? styles.toolButton + " " + styles.active : styles.toolButton}
+				aria-label="Добавление"
+			>
+				<FaShapes style={getIconStyle(TOOLS.SHAPE)} />
 				<label htmlFor={TOOLS.SHAPE}>Добавление</label>
-			</div>
-
-			<div>
-				<input
-					type="radio"
-					id={TOOLS.ERASER}
-					name="control"
-					value={TOOLS.ERASER}
-					checked={tool === TOOLS.ERASER}
-					onChange={handleOnChange}
-				/>
+			</button>
+			<button
+				onClick={() => handleOnChange(TOOLS.ERASER)}
+				className={tool === TOOLS.ERASER ? styles.toolButton + " " + styles.active : styles.toolButton}
+				aria-label="Удаление"
+			>
+				<BsEraser style={getIconStyle(TOOLS.ERASER)} />
 				<label htmlFor={TOOLS.ERASER}>Удаление</label>
-			</div>
-		</div>
+			</button>
+		</div >
 	);
 };
 

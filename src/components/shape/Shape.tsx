@@ -5,8 +5,7 @@ import { SHAPE_TYPES, TOOLS } from "@/types/enum";
 import { IShape } from "@/types/interfaces/index";
 import html2canvas from "html2canvas";
 import Konva from "konva";
-import React, { useCallback, useMemo } from "react";
-import { useEffect, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Circle, Group, Image, Rect } from "react-konva";
 import { Html } from "react-konva-utils";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -30,20 +29,20 @@ const Shape = React.memo((props: IShape) => {
 		shallowEqual
 	);
 
-	const isSelected = useMemo(() => selectedElements.includes(id), [selectedElements, id]);
-	const isEditing = useMemo(() => editedElementId === id, [editedElementId, id]);
+	const isSelected = useMemo(
+		() => selectedElements.includes(id),
+		[selectedElements, id]
+	);
+	const isEditing = useMemo(
+		() => editedElementId === id,
+		[editedElementId, id]
+	);
 
-
-	const renderImage = async () => {
+	const renderImage = useCallback(async () => {
 		const htmltext = document.getElementById(`htmltext_${id}`);
-		console.log("render image", htmltext);
-
 		if (!htmltext || htmltext.innerHTML.trim() === "") return;
 
-		const quillEditor = htmltext.querySelector<HTMLDivElement>(".ql-tooltip");
-		if (quillEditor) {
-			quillEditor.style.display = "none";
-		}
+		hideQuillEditor(htmltext);
 
 		const canvas = await html2canvas(htmltext, {
 			backgroundColor: "rgba(0, 0, 0, 0)",
@@ -55,19 +54,22 @@ const Shape = React.memo((props: IShape) => {
 		if (canvas.width === 0 || canvas.height === 0) return;
 
 		setImage(canvas);
-	};
+	}, [id, width, height]);
 
-	useEffect(() => {
-		setImage(null);
-		if (!isEditing) renderImage();
-	}, [id, isEditing]);
+	const hideQuillEditor = (htmltext: HTMLElement) => {
+		const quillEditor = htmltext.querySelector<HTMLDivElement>(".ql-tooltip");
+		if (quillEditor) {
+			quillEditor.style.display = "none";
+		}
+	};
 
 	const handleClick = (e: Konva.KonvaEventObject<MouseEvent>) => {
 		e.cancelBubble = true;
+
 		if (currentTool !== TOOLS.CURSOR) return;
 
 		if (isEditing || id !== editedElementId) {
-			handleExitEditing()
+			handleSetEditing();
 		}
 
 		if (!isSelected) {
@@ -75,70 +77,96 @@ const Shape = React.memo((props: IShape) => {
 		}
 	};
 
-	const handleExitEditing = useCallback(() => {
+	// Обработчик выхода из редактирования
+	const handleSetEditing = useCallback(() => {
 		renderImage();
 		dispatch(stopEditing());
-	}, [renderImage, isEditing]);
-
+	}, [dispatch, renderImage]);
 
 	const handleDoubleClick = (e: Konva.KonvaEventObject<MouseEvent>) => {
 		e.cancelBubble = true;
+
 		if (currentTool !== TOOLS.CURSOR) return;
 
 		dispatch(startEditing(id));
 	};
 
+	// Рендеринг формы элемента (был задел на добавление редактора Shape, но не хватило времени)
 	const RenderShape = useMemo(() => {
 		switch (style.type) {
 			case SHAPE_TYPES.RECT:
-				return <Rect width={width} height={height} fill={style.fill || "white"} stroke={isSelected ? "blue" : style.stroke || "black"} strokeWidth={2} data-id={id} />;
+				return (
+					<Rect
+						width={width}
+						height={height}
+						fill={style.fill || "white"}
+						stroke={isSelected ? "blue" : style.stroke || "black"}
+						strokeWidth={2}
+						data-id={id}
+					/>
+				);
 			case SHAPE_TYPES.CIRCLE:
-				return <Circle radius={width / 2} fill={style.fill || "white"} stroke={isSelected ? "blue" : style.stroke || "black"} strokeWidth={2} data-id={id} />;
+				return (
+					<Circle
+						radius={width / 2}
+						fill={style.fill || "white"}
+						stroke={isSelected ? "blue" : style.stroke || "black"}
+						strokeWidth={2}
+						data-id={id}
+					/>
+				);
 			default:
-				return <Rect width={width} height={height} fill={style.fill || "white"} stroke={isSelected ? "blue" : style.stroke || "black"} strokeWidth={2} data-id={id} />;
+				return (
+					<Rect
+						width={width}
+						height={height}
+						fill={style.fill || "white"}
+						stroke={isSelected ? "blue" : style.stroke || "black"}
+						strokeWidth={2}
+						data-id={id}
+					/>
+				);
 		}
 	}, [style, isSelected, width, height, id]);
 
 	return (
-		<>
-			<Group
-				x={x}
-				y={y}
-				onClick={handleClick}
-				onDblClick={handleDoubleClick}
-				ref={groupRef}
-				draggable
-				onDragMove={() => { }} //Избавиться от предупреждений
-				onDragEnd={() => { }} //Избавиться от предупреждений
-			>
-				{RenderShape}
+		<Group
+			x={x}
+			y={y}
+			onClick={handleClick}
+			onDblClick={handleDoubleClick}
+			ref={groupRef}
+			draggable
+			onDragMove={() => { }}
+			onDragEnd={() => { }}
+		>
+			{RenderShape}
 
-				{isEditing ? (
-					<Html>
-						<HtmlText
-							ref={htmlRef}
-							html={value}
-							width={width}
-							height={height}
-							id={id}
-							isEditing={isEditing}
-							setValue={setValue}
-							onCallbackHandler={handleExitEditing}
-						/>
-					</Html>
-				) : image ? (
-					<Image
-						ref={imageRef}
-						image={image}
-						x={0}
-						y={0}
+			{isEditing ? (
+				<Html>
+					<HtmlText
+						ref={htmlRef}
+						html={value}
 						width={width}
 						height={height}
-						data-id={id}
+						id={id}
+						isEditing={isEditing}
+						setValue={setValue}
+						onCallbackHandler={handleSetEditing}
 					/>
-				) : null}
-			</Group>
-		</>
+				</Html>
+			) : image ? (
+				<Image
+					ref={imageRef}
+					image={image}
+					x={0}
+					y={0}
+					width={width}
+					height={height}
+					data-id={id}
+				/>
+			) : null}
+		</Group>
 	);
 });
 

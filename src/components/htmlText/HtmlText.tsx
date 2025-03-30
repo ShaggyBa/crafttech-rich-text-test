@@ -1,8 +1,8 @@
 import { IHtmlText } from "@/types/interfaces/index";
 import { forwardRef, useEffect, useRef, useState } from "react";
-import "./HtmlText.module.scss";
-import "react-quill-new/dist/quill.bubble.css";
 import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.bubble.css";
+import "./HtmlText.module.scss";
 
 const HtmlText = forwardRef<HTMLDivElement, IHtmlText>(
 	({ html, id, width, height, isEditing, setValue, onCallbackHandler }, ref) => {
