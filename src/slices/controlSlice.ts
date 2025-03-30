@@ -1,18 +1,19 @@
-import { IControlState } from "@/types/interfaces/Control/IControlState";
+import { TOOLS } from "@/types/enum";
+import { IControlState } from "@/types/interfaces/index"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: IControlState = {
-  selectedTool: "cursor", // начальный инструмент
+	selectedTool: TOOLS.CURSOR, // начальный инструмент
 };
 
 const controlSlice = createSlice({
-  name: "control",
-  initialState,
-  reducers: {
-    setTool: (state, action: PayloadAction<string>) => {
-      state.selectedTool = action.payload;
-    },
-  },
+	name: "control",
+	initialState,
+	reducers: {
+		setTool: (state, action: PayloadAction<string>) => {
+			state.selectedTool = action.payload;
+		},
+	},
 });
 
 export const { setTool } = controlSlice.actions;

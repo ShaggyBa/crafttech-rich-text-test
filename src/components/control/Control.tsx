@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setTool } from "@/slices/controlSlice";
+import { setTool } from "@/slices/index";
 import { RootState } from "@/store/store";
+import { TOOLS } from "@/types/enum";
 const Control = () => {
 	const dispatch = useDispatch()
 
@@ -15,37 +16,37 @@ const Control = () => {
 			<div>
 				<input
 					type="radio"
-					id="cursor"
+					id={TOOLS.CURSOR}
 					name="control"
-					value="cursor"
-					checked={tool === "cursor"}
+					value={TOOLS.CURSOR}
+					checked={tool === TOOLS.CURSOR}
 					onChange={handleOnChange}
 				/>
-				<label htmlFor="cursor">Взаимодействие</label>
+				<label htmlFor={TOOLS.CURSOR}>Взаимодействие</label>
 			</div>
 
 			<div>
 				<input
 					type="radio"
-					id="shape"
+					id={TOOLS.SHAPE}
 					name="control"
-					value="shape"
-					checked={tool === "shape"}
+					value={TOOLS.SHAPE}
+					checked={tool === TOOLS.SHAPE}
 					onChange={handleOnChange}
 				/>
-				<label htmlFor="shape">Добавление</label>
+				<label htmlFor={TOOLS.SHAPE}>Добавление</label>
 			</div>
 
 			<div>
 				<input
 					type="radio"
-					id="eraser"
+					id={TOOLS.ERASER}
 					name="control"
-					value="eraser"
-					checked={tool === "eraser"}
+					value={TOOLS.ERASER}
+					checked={tool === TOOLS.ERASER}
 					onChange={handleOnChange}
 				/>
-				<label htmlFor="eraser">Удаление</label>
+				<label htmlFor={TOOLS.ERASER}>Удаление</label>
 			</div>
 		</div>
 	);
