@@ -16,6 +16,11 @@ const Canvas = () => {
 
 	const tool = useSelector((state: RootState) => state.control.selectedTool);
 
+	const selectedElements = useSelector(
+		(state: RootState) => state.selected.selectedElements,
+		shallowEqual
+	);
+
 	const dispatch = useDispatch();
 
 	const handleOnClick = (e: Konva.KonvaEventObject<MouseEvent>) => {
@@ -44,7 +49,7 @@ const Canvas = () => {
 						fill: "",
 						stroke: "",
 						strokeWidth: 0,
-						type: SHAPE_TYPES.CIRCLE,
+						type: SHAPE_TYPES.RECT,
 					}
 				};
 				dispatch(addShape(figure));
@@ -61,8 +66,9 @@ const Canvas = () => {
 
 		if (clickedOnEmpty) {
 			// Очищаем выделенные элементы и редактируемый элемент
-			dispatch(clearSelection());
-			dispatch(stopEditing());
+			if (selectedElements.length > 0)
+				dispatch(clearSelection());
+
 		}
 
 		if (tool === TOOLS.ERASER) {

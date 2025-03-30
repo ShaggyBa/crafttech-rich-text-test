@@ -7,7 +7,6 @@ import { IHtmlText } from "./HtmlText/IHtmlText";
 import { ISelectedContext } from "./Selected/ISelectedContext";
 import { ISelectedElementsState } from "./Selected/ISelectedElementsState";
 import { IShape } from "./Shape/IShape";
-import { IToolbar } from "./Toolbar/IToolbar";
 export type {
 	ICanvasContext,
 	IControlContext,
@@ -18,5 +17,4 @@ export type {
 	ISelectedContext,
 	ISelectedElementsState,
 	IShape,
-	IToolbar
 }
