@@ -1,8 +1,6 @@
-import { useRef } from "react";
 import "./App.css";
-import Canvas from "./components/Canvas/Canvas";
-import Control from "./components/Control/Control";
-import Konva from "konva";
+import Canvas from "./components/canvas/Canvas";
+import Control from "./components/control/Control";
 
 function App() {
   return (
